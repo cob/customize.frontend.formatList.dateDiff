@@ -1,4 +1,3 @@
-console.log("DATE DIFF LOADED 2")
 cob.custom.customize.push(function (core, utils, ui) {
     core.customizeAllColumns("*", (node, esDoc, colDef) => {
         if(getDateDiffRegex("dateDiff").exec(colDef.fieldDefDescription) != null || getDateDiffRegex("dateDiffAfter").exec(colDef.fieldDefDescription) != null) {
