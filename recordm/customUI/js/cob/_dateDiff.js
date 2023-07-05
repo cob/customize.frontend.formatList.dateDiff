@@ -1,9 +1,6 @@
 cob.custom.customize.push(function (core, utils, ui) {
     core.customizeAllColumns("*", (node, esDoc, colDef) => {
         if(getDateDiffRegex("dateDiff",colDef.fieldDefDescription) || getDateDiffRegex("dateDiffAfter",colDef.fieldDefDescription)) {
-            if ("dateDiff"==input) {
-                console.warn("dateDiff IS NOW DEPRECATED. USE *dateDiffBefore* OR *dateDiffAfter*")
-            }
             node.insertAdjacentHTML('beforeend', diffDaysToNow(esDoc[colDef.field]));
         } else if(getDateDiffRegex("dateDiffBefore",colDef.fieldDefDescription)) {
             node.insertAdjacentHTML('afterbegin', diffDaysToNow(esDoc[colDef.field]));
@@ -11,7 +8,11 @@ cob.custom.customize.push(function (core, utils, ui) {
     });
     function getDateDiffRegex(input,fieldDefDescription) {
         const regexString = `\\$date.*\\$style\\[([^,]+,)*${input}(,[^,]+)*\\]`;
-        return ((new RegExp(regexString)).exec(fieldDefDescription))!=null;
+        let res = ((new RegExp(regexString)).exec(fieldDefDescription))!=null;
+        if (res && "dateDiff"==input) {
+            console.warn("dateDiff IS NOW DEPRECATED. USE *dateDiffBefore* OR *dateDiffAfter*")
+        }
+        return res;
     }
     function diffDaysToNow(cellMillis) {
         if(!cellMillis || cellMillis.length == 0) { return ("") }
