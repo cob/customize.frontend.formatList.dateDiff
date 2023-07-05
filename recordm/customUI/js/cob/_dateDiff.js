@@ -1,17 +1,17 @@
 cob.custom.customize.push(function (core, utils, ui) {
     core.customizeAllColumns("*", (node, esDoc, colDef) => {
-        if(getDateDiffRegex("dateDiff").exec(colDef.fieldDefDescription) != null || getDateDiffRegex("dateDiffAfter").exec(colDef.fieldDefDescription) != null) {
+        if(getDateDiffRegex("dateDiff",colDef.fieldDefDescription) || getDateDiffRegex("dateDiffAfter",colDef.fieldDefDescription)) {
+            if ("dateDiff"==input) {
+                console.warn("dateDiff IS NOW DEPRECATED. USE *dateDiffBefore* OR *dateDiffAfter*")
+            }
             node.insertAdjacentHTML('beforeend', diffDaysToNow(esDoc[colDef.field]));
-        } else if(getDateDiffRegex("dateDiffBefore").exec(colDef.fieldDefDescription) != null) {
+        } else if(getDateDiffRegex("dateDiffBefore",colDef.fieldDefDescription)) {
             node.insertAdjacentHTML('afterbegin', diffDaysToNow(esDoc[colDef.field]));
         }
     });
-    function getDateDiffRegex(input) {
-        if ("dateDiff"==input) {
-            console.warn("dateDiff IS NOW DEPRECATED. USE *dateDiffBefore* OR *dateDiffAfter*")
-        }
+    function getDateDiffRegex(input,fieldDefDescription) {
         const regexString = `\\$date.*\\$style\\[([^,]+,)*${input}(,[^,]+)*\\]`;
-        return new RegExp(regexString);
+        return ((new RegExp(regexString)).exec(fieldDefDescription))!=null;
     }
     function diffDaysToNow(cellMillis) {
         if(!cellMillis || cellMillis.length == 0) { return ("") }
