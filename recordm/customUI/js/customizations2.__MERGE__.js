@@ -1,1 +1,1 @@
-import("./cob/_dateDiff.js");
+import "./cob/_dateDiff.js";
