@@ -25,7 +25,7 @@ cob.custom.customize.push(function (core, utils, ui) {
 
         var numDaysDiff = Math.floor((today-cellDate) / (1000*60*60*24));
         var cellDaysDiffColor = (numDaysDiff > 0 ? "red" : "green");
-        let dayStr = (numDaysDiff > 1 ? "dias":"dia")
+        let dayStr = ( Math.abs(numDaysDiff)  == 1 ? "dia":"dias")
         return `<span style="display: inline-block; width: 55px; text-align: right; font-size: 0.85em; margin-right: 4px; font-style: italic; color:${cellDaysDiffColor}">${numDaysDiff} ${dayStr}</span>`
     }
 })
